@@ -34,5 +34,8 @@ nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
 # calculer le prix minimum en utilisant les valeurs saisies
 prix_min = calcul_prix_min(nb_ecoles, nb_siret)
 
+# arrondir le résultat à 2 décimales
+prix_min_arrondi = round(prix_min, 2)
+
 # afficher le résultat
-st.write("<h1>Le prix minimum est de: {}</h1>".format(prix_min), unsafe_allow_html=True)
+st.write("Le prix minimum est de: {:.2f}".format(prix_min_arrondi))
