@@ -1,6 +1,6 @@
 import streamlit as st
 
-def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
+def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, tranche_effectif):
     NEGO = 165
     traitement = nb_ecoles * 7.5
 
@@ -10,6 +10,30 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
         saisie = nb_ecoles * 1.2
     else:
         saisie = (nb_siret + nb_ecoles) * 1.2
+
+    if tranche_effectif:
+        if tranche_effectif == "10 à 19 salariés":
+            montant_taxe = 225
+        elif tranche_effectif == "20 à 49 salariés":
+            montant_taxe = 450
+        elif tranche_effectif == "50 à 99 salariés":
+            montant_taxe = 1125
+        elif tranche_effectif == "100 à 199 salariés":
+            montant_taxe = 2251
+        elif tranche_effectif == "200 à 249 salariés":
+            montant_taxe = 4503
+        elif tranche_effectif == "250 à 499 salariés":
+            montant_taxe = 5629
+        elif tranche_effectif == "500 à 999 salariés":
+            montant_taxe = 11258
+        elif tranche_effectif == "1 000 à 1 999 salariés":
+            montant_taxe = 22517
+        elif tranche_effectif == "2 000 à 4 999 salariés":
+            montant_taxe = 45034
+        elif tranche_effectif == "5 000 à 9 999 salariés":
+            montant_taxe = 112687
+        elif tranche_effectif == "10 000 salariés et plus":
+            montant_taxe = 225174
 
     extraction = saisie
 
@@ -21,31 +45,23 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
 
     prix_min = cout_revient * 4
 
-    return prix_min
+    if montant_taxe > prix_min:
+        resultat = "PROFITABLE"
+    else:
+        resultat = "PAS PROFITABLE"
 
-st.title("Calcul du prix minimum")
+    return prix_min, resultat
 
-nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
-nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
-montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
+st.title("Calcul : Profitabilité 13%")
 
-tranche_effectif = st.selectbox("Tranche effectif", ["10 à 19 salariés", "20 à 49 salariés", "50 à 99 salariés",
-                                                      "100 à 199 salariés", "200 à 249 salariés", "250 à 499 salariés",
-                                                      "500 à 999 salariés", "1 000 à 1 999 salariés", "2 000 à 4 999 salariés",
-                                                      "5 000 à 9 999 salariés", "10 000 salariés et plus"])
+option = st.selectbox("Choisir entre Montant de la taxe et Tranche effectif", ("Montant de la taxe", "Tranche effectif"))
 
-prix_min = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
-
-if montant_taxe > prix_min:
-    resultat = "PROFITABLE"
+if option == "Montant de la taxe":
+    nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
+    nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
+    montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
+    tranche_effectif = None
 else:
-    resultat = "PAS PROFITABLE"
-
-if resultat == "PROFITABLE":
-    st.write("<h1 style='color:green;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
-else:
-    st.write("<h1 style='color:red;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
-
-st.subheader("Prix minimum:")
-prix_min_arrondi = round(prix_min, 2)
-st.write(prix_min_arrondi)
+    nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
+    nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
+    tranche_effect
