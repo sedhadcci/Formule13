@@ -1,7 +1,6 @@
 import streamlit as st
 
-# définir la formule pour calculer prix_min
-def calcul_prix_min(nb_ecoles, nb_siret):
+def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
     NEGO = 165
     traitement = nb_ecoles * 7.5
 
@@ -22,20 +21,25 @@ def calcul_prix_min(nb_ecoles, nb_siret):
 
     prix_min = cout_revient * 4
 
-    return prix_min
+    if montant_taxe > prix_min:
+        resultat = "PROFITABLE"
+    else:
+        resultat = "PAS PROFITABLE"
 
-# créer l'interface Streamlit
+    return prix_min, resultat
+
 st.title("Calcul du prix minimum")
 
-# ajouter les champs de saisie pour nb_ecoles et nb_siret
 nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
 nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
+montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
 
-# calculer le prix minimum en utilisant les valeurs saisies
-prix_min = calcul_prix_min(nb_ecoles, nb_siret)
+prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
 
-# arrondir le résultat à 2 décimales
 prix_min_arrondi = round(prix_min, 2)
 
-# afficher le résultat
 st.write("<h1>Le prix minimum est de: {:.2f}</h1>".format(prix_min_arrondi), unsafe_allow_html=True)
+if resultat == "PROFITABLE":
+    st.write("<h2>Résultat : PROFITABLE</h2>")
+else:
+    st.write("<h2>Résultat : PAS PROFITABLE</h2>")
