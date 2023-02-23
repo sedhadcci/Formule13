@@ -75,9 +75,9 @@ else:
     prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, None, tranche_effectif)
 
 if resultat == "PROFITABLE":
-    st.write("<h1 style='color:green;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
+    st.write("<h1 style='color:green;'> {}</h1>".format(resultat), unsafe_allow_html=True)
 else:
-    st.write("<h1 style='color:red;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
+    st.write("<h1 style='color:red;'> {}</h1>".format(resultat), unsafe_allow_html=True)
 
 st.subheader("Prix minimum:")
 prix_min_arrondi = round(prix_min, 2)
