@@ -28,7 +28,7 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
 
     return prix_min, resultat
 
-st.title("Calcul du prix minimum")
+st.title("Calcul : Profitabilité 13%")
 
 nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
 nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
