@@ -1,6 +1,7 @@
 import streamlit as st
 
-def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
+def calcul_prix_min(nb_ecoles, nb_siret, tranche_effectif, montant_taxe):
+    # définition des variables
     NEGO = 165
     traitement = nb_ecoles * 7.5
 
@@ -10,6 +11,22 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
         saisie = nb_ecoles * 1.2
     else:
         saisie = (nb_siret + nb_ecoles) * 1.2
+
+    if tranche_effectif:
+        tranche_effectif_dict = {
+            "10 à 19 salariés​​": 225,
+            "20 à 49 salariés​​​​": 450,
+            "50 à 99 salariés​​​​": 1125,
+            "100 à 199 salariés​​​​": 2251,
+            "200 à 249 salariés​​​​": 4503,
+            "250 à 499 salariés​​​​": 5629,
+            "500 à 999 salariés​​​​": 11258,
+            "1 000 à 1 999 salariés​​": 22517,
+            "2 000 à 4 999 salariés​​": 45034,
+            "5 000 à 9 999 salariés​​": 112687,
+            "10 000 salariés et plus​​​​": 225174
+        }
+        montant_taxe = tranche_effectif_dict[tranche_effectif]
 
     extraction = saisie
 
@@ -32,7 +49,32 @@ st.title("Calcul : Profitabilité 13%")
 
 nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
 nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
-montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
+
+choix_taxe_ou_tranche = st.radio("Choisir Montant de la taxe ou Tranche effectif", ("Montant de la taxe", "Tranche effectif"))
+if choix_taxe_ou_tranche == "Montant de la taxe":
+    montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
+    tranche_effectif = None
+else:
+    tranche_effectif_options = [
+        "10 à 19 salariés​​",
+        "20 à 49 salariés​​​​",
+        "50 à 99 salariés​​​​",
+        "100 à 199 salariés​​​​",
+        "200 à 249 salariés​​​​",
+        "250 à 499 salariés​​​​",
+        "500 à 999 salariés​​​​",
+        "1 000 à 1 999 salariés​​ (22517)",
+        "2 000 à 4 999 salariés​​ (45034)",
+        "5 000 à 9 999 salariés​​ (112687)",
+        "10 000 salariés et plus​​​​ (225174)"
+     ]
+    
+    tranche_effectif = st.selectbox("Tranche effectif", tranche_effectif_options)
+
+# Récupération de la valeur de la tranche d'effectif sélectionnée
+tranche_effectif_valeur = int(tranche_effectif.split("(")[1].split(")")[0].replace(" ", "").replace(",", ""))
+
+montant_taxe = tranche_effectif_valeur
 
 prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
 
