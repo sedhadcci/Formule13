@@ -36,10 +36,8 @@ montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
 
 prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
 
-prix_min_arrondi = round(prix_min, 2)
+st.write("<h1>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
 
-st.write("<h1>Le prix minimum est de: {:.2f}</h1>".format(prix_min_arrondi), unsafe_allow_html=True)
-if resultat == "PROFITABLE":
-    st.write("<h2>Résultat : PROFITABLE</h2>")
-else:
-    st.write("<h2>Résultat : PAS PROFITABLE</h2>")
+st.subheader("Prix minimum:")
+prix_min_arrondi = round(prix_min, 2)
+st.write(prix_min_arrondi)
