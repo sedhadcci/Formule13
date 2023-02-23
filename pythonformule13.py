@@ -35,4 +35,4 @@ nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
 prix_min = calcul_prix_min(nb_ecoles, nb_siret)
 
 # afficher le résultat
-st.write("Le prix minimum est de:", prix_min)
+st.write("<h1>Le prix minimum est de: {}</h1>".format(prix_min), unsafe_allow_html=True)
