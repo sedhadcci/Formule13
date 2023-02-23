@@ -38,4 +38,4 @@ prix_min = calcul_prix_min(nb_ecoles, nb_siret)
 prix_min_arrondi = round(prix_min, 2)
 
 # afficher le résultat
-st.write("</h1>Le prix minimum est de: {:.2f}</h1>".format(prix_min_arrondi), , unsafe_allow_html=True)
+st.write("<h1>Le prix minimum est de: {:.2f}</h1>".format(prix_min_arrondi), unsafe_allow_html=True)
