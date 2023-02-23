@@ -21,20 +21,25 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
 
     prix_min = cout_revient * 4
 
-    if montant_taxe > prix_min:
-        resultat = "PROFITABLE"
-    else:
-        resultat = "PAS PROFITABLE"
+    return prix_min
 
-    return prix_min, resultat
-
-st.title("Calcul : Profitabilité 13%")
+st.title("Calcul du prix minimum")
 
 nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
 nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
 montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
 
-prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
+tranche_effectif = st.selectbox("Tranche effectif", ["10 à 19 salariés", "20 à 49 salariés", "50 à 99 salariés",
+                                                      "100 à 199 salariés", "200 à 249 salariés", "250 à 499 salariés",
+                                                      "500 à 999 salariés", "1 000 à 1 999 salariés", "2 000 à 4 999 salariés",
+                                                      "5 000 à 9 999 salariés", "10 000 salariés et plus"])
+
+prix_min = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
+
+if montant_taxe > prix_min:
+    resultat = "PROFITABLE"
+else:
+    resultat = "PAS PROFITABLE"
 
 if resultat == "PROFITABLE":
     st.write("<h1 style='color:green;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
