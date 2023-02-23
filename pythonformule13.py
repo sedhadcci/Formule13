@@ -1,46 +1,41 @@
 import streamlit as st
 
-def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe):
-    NEGO = 165
-    traitement = nb_ecoles * 7.5
+st.title('Calcul : Profitabilité 13%')
 
-    if nb_ecoles == 1:
-        saisie = nb_siret * 1.2
-    elif nb_siret == 1:
-        saisie = nb_ecoles * 1.2
-    else:
-        saisie = (nb_siret + nb_ecoles) * 1.2
+# Entrée utilisateur pour le nombre d'écoles
+nb_ecoles = st.number_input("Nombre d'écoles :", value=1)
 
-    extraction = saisie
+# Entrée utilisateur pour le nombre de SIRET actifs
+nb_siret = st.number_input("Nombre de SIRET actifs :", value=1)
 
-    total_heure = (NEGO + traitement + saisie + extraction) / 60
+# Entrée utilisateur pour la tranche d'effectif
+effectif_list = ["10 à 19 salariés​​", "20 à 49 salariés​​​​", "50 à 99 salariés​​​​", "100 à 199 salariés​​​​", "200 à 249 salariés​​​​", "250 à 499 salariés​​​​", "500 à 999 salariés​​​​", "1 000 à 1 999 salariés​​", "2 000 à 4 999 salariés​​", "5 000 à 9 999 salariés​​", "10 000 salariés et plus​​​​"]
+effectif_value = [225, 450, 1125, 2251, 4503, 5629, 11258, 22517, 45034, 112687, 225174]
+effectif_dict = dict(zip(effectif_list, effectif_value))
+tranche_effectif = st.selectbox("Tranche d'effectif :", options=effectif_list)
 
-    cout_revient = total_heure * 47.96158822
-
-    seuil_rentabilite = cout_revient * 1.5
-
-    prix_min = cout_revient * 4
-
-    if montant_taxe > prix_min:
-        resultat = "PROFITABLE"
-    else:
-        resultat = "PAS PROFITABLE"
-
-    return prix_min, resultat
-
-st.title("Calcul : Profitabilité 13%")
-
-nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
-nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
-montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
-
-prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe)
-
-if resultat == "PROFITABLE":
-    st.write("<h1 style='color:green;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
+# Calcul du prix minimum
+nego = 165
+traitement = nb_ecoles * 7.5
+if nb_ecoles == 1:
+    saisie = nb_siret * 1.2
+elif nb_siret == 1:
+    saisie = nb_ecoles * 1.2
 else:
-    st.write("<h1 style='color:red;'>Résultat : {}</h1>".format(resultat), unsafe_allow_html=True)
+    saisie = (nb_ecoles + nb_siret) * 1.2
+extraction = saisie
+total_heure = (nego + traitement + saisie + extraction) / 60
+cout_revient = total_heure * 47.96158822
+seuil_rentabilite = cout_revient * 1.5
+prix_min = cout_revient * 4 - effectif_dict[tranche_effectif]
 
-st.subheader("Prix minimum:")
-prix_min_arrondi = round(prix_min, 2)
-st.write(prix_min_arrondi)
+# Affichage du résultat
+if prix_min > 0:
+    resultat = "PROFITABLE"
+    resultat_color = "green"
+else:
+    resultat = "PAS PROFITABLE"
+    resultat_color = "red"
+
+st.markdown(f"<h1 style='text-align: center; color: {resultat_color};'>{resultat}</h1>", unsafe_allow_html=True)
+st.write(f"Prix minimum : {prix_min:.2f}")
