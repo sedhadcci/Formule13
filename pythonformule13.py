@@ -18,6 +18,8 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, tranche_effectif):
     cout_revient = total_heure * 47.96158822
 
     if tranche_effectif:
+        if tranche_effectif == "moins de 10 salariés":
+            montant_taxe = 1
         if tranche_effectif == "10 à 19 salariés":
             montant_taxe = 225
         elif tranche_effectif == "20 à 49 salariés":
@@ -67,7 +69,7 @@ else:
     nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
     nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
     montant_taxe = None
-    tranche_effectif = st.selectbox("Tranche effectif", ("10 à 19 salariés", "20 à 49 salariés", "50 à 99 salariés", "100 à 199 salariés", "200 à 249 salariés​​​​", "250 à 499 salariés​​​​", "500 à 999 salariés​​​​", "1 000 à 1 999 salariés", "2 000 à 4 999 salariés", "5 000 à 9 999 salariés", "10 000 salariés et plus​​​​"))
+    tranche_effectif = st.selectbox("Tranche effectif", ("moins de 10 salariés", "10 à 19 salariés", "20 à 49 salariés", "50 à 99 salariés", "100 à 199 salariés", "200 à 249 salariés​​​​", "250 à 499 salariés​​​​", "500 à 999 salariés​​​​", "1 000 à 1 999 salariés", "2 000 à 4 999 salariés", "5 000 à 9 999 salariés", "10 000 salariés et plus​​​​"))
 
 if montant_taxe is not None:
     prix_min, resultat = calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, None)
