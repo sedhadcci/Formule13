@@ -58,12 +58,12 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, tranche_effectif):
 
 st.title("Calcul : Profitabilité 13%")
 
-choix_entree = st.radio("Choisissez le mode d'entrée des données :", ("Montant de la taxe", "Tranche effectif"))
+choix_entree = st.radio("Choisissez le mode d'entrée des données :", ("Montant de la taxe 13%", "Tranche effectif"))
 
-if choix_entree == "Montant de la taxe":
+if choix_entree == "Montant de la taxe 13%":
     nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
     nb_siret = st.number_input("Nombre de Siret actifs", min_value=0, step=1)
-    montant_taxe = st.number_input("Montant de la taxe", min_value=0.0, step=0.01)
+    montant_taxe = st.number_input("Montant de la taxe 13%", min_value=0.0, step=0.01)
     tranche_effectif = None
 else:
     nb_ecoles = st.number_input("Nombre d'écoles", min_value=0, step=1)
