@@ -5,11 +5,11 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, tranche_effectif):
     traitement = nb_ecoles * 7.5
 
     if nb_ecoles == 1:
-        saisie = nb_siret * 1.2
+        saisie = nb_siret * 4
     elif nb_siret == 1:
-        saisie = nb_ecoles * 1.2
+        saisie = nb_ecoles * 4
     else:
-        saisie = (nb_siret + nb_ecoles) * 1.2
+        saisie = (nb_siret + nb_ecoles) * 4
 
     extraction = saisie
 
