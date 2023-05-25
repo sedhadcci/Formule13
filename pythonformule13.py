@@ -47,7 +47,7 @@ def calcul_prix_min(nb_ecoles, nb_siret, montant_taxe, tranche_effectif):
     
     seuil_rentabilite = cout_revient * 1.5
 
-    prix_min = cout_revient * 4
+    prix_min = ( cout_revient * 4 ) + 100
 
     if montant_taxe > prix_min:
         resultat = "PROFITABLE"
